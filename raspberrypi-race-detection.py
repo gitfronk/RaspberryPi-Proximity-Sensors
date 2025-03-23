@@ -142,8 +142,8 @@ def run_race():
     print(f"[{pilota}] Tempo: {travel_time:.3f} s")
     travel_times.append(travel_time)
     timestamps.append(time.time())
-    leaderboard.append((pilota, travel_time))
-        leaderboard.sort(key=lambda x: x[1])
+        leaderboard.append((pilota, travel_time))
+    leaderboard.sort(key=lambda x: x[1])
     aggiorna_tabella_classifica()
     aggiorna_classifica_su_file()
     is_running = False
