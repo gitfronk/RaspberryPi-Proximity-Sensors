@@ -116,7 +116,6 @@ def run_race():
    timestamps.append(time.time())
    leaderboard.append((pilota, travel_time))
    leaderboard.sort(key=lambda x: x[1])
-   leaderboard[:] = leaderboard[:10]
    aggiorna_tabella_classifica()
    aggiorna_classifica_su_file()
    is_running = False
