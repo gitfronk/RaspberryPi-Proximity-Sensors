@@ -82,7 +82,7 @@ def aggiorna_classifica_su_file():
    filename = classifica_filename_entry.get().strip() or 'classifica.csv'
    with open(filename, mode='w', newline='') as f:
        writer = csv.writer(f)
-       writer.writerow(["Posizione", "Pilota", "Tempo (s)"])
+       writer.writerow(["Posizione", "Pilota", "Tempo (s)", "Dist. prec.", "Dist. 1°"])
        for i, (p, t) in enumerate(leaderboard):
            writer.writerow([i + 1, p, round(t, 3)])
 
@@ -168,6 +168,7 @@ frame_classifica.pack(padx=10, pady=5)
 
 tk.Label(frame_classifica, text="Classifica Migliori Tempi").pack()
 
+# Add visualized column.
 columns = ("Posizione", "Pilota", "Tempo (s)", "Dist. prec.", "Dist. 1°")
 leaderboard_table = ttk.Treeview(frame_classifica, columns=columns, show='headings')
 for col in columns:
