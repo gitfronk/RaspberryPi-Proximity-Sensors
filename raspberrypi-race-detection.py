@@ -59,10 +59,16 @@ def carica_classifica():
    global leaderboard
    filename = classifica_filename_entry.get().strip() or 'classifica.csv'
    if os.path.exists(filename):
-       with open(filename, mode='r') as f:
-           reader = csv.reader(f)
-           next(reader)  # intestazione
-           leaderboard = [(row[1], float(row[2])) for row in reader]
+       with open(filename, mode='r', encoding='utf-8') as f:
+           reader = csv.reader(f, delimiter=';')
+           next(reader) # Skip intestation.
+           leaderboard = []
+           for row in reader:
+               try:
+                   tempo = float(row[2].replace(',', '.'))
+                   leaderboard.append((row[1], tempo))
+               except ValueError:
+                   print(f"[ERRORE] Riga non valida: {row}")
        aggiorna_tabella_classifica()
 
 def carica_classifica_da_file():
@@ -70,8 +76,8 @@ def carica_classifica_da_file():
    file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv")])
    if not file_path:
        return
-   with open(file_path, mode='r') as f:
-       reader = csv.reader(f)
+   with open(file_path, mode='r') as file:
+       reader = csv.reader(file)
        next(reader)
        leaderboard = [(row[1], float(row[2])) for row in reader]
    classifica_filename_entry.delete(0, tk.END)
