@@ -83,12 +83,13 @@ def aggiorna_classifica_su_file():
    with open(filename, mode='w', newline='', encoding='utf-8') as f:
        writer = csv.writer(f, delimiter=';')
        writer.writerow(["Posizione", "Pilota", "Tempo (s)", "Dist. prec.", "Dist. 1°"])
-    #    for i, (pilot_name, time) in enumerate(leaderboard):
-    #        formatted_time = f"{time:.3f}".replace('.', ',')
-    #        writer.writerow([i + 1, pilot_name, formatted_time])
-       for position, pilot, time, distance_prec, distance_first in leaderboard_table:
-           formatted_time = f"{time:.3f}".replace('.', ',')
-           writer.writerow([position, pilot, formatted_time, distance_prec, distance_first])
+       for row_id in leaderboard_table.get_children():
+           values = leaderboard_table.item(row_id)['values']
+           position, pilot, time, dist_prec, dist_first = values
+           formatted_time = time.replace('.', ',')
+           formatted_dist_prec = dist_prec.replace('.', ',')
+           formatted_dist_first = dist_first.replace('.', ',')
+           writer.writerow([position, pilot, formatted_time, formatted_dist_prec, formatted_dist_first])
            
 def reset_classifica():
    global leaderboard
