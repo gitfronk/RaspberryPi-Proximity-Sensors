@@ -41,19 +41,24 @@ def receive_timestamp():
            if not data:
                return None
            return float(data.decode())
-
-# --- Classifica ---
+       
 def aggiorna_tabella_classifica():
-   for row in leaderboard_table.get_children():
-       leaderboard_table.delete(row)
-   for i, (p, t) in enumerate(leaderboard):
-       dist_prev = "-"
-       dist_first = "-"
-       if i > 0:
-           dist_prev = f"+{round(t - leaderboard[i - 1][1], 3)}s"
-       if i >= 1:
-           dist_first = f"+{round(t - leaderboard[0][1], 3)}s"
-       leaderboard_table.insert("", "end", values=(i + 1, p, round(t, 3), dist_prev, dist_first))
+    for row in leaderboard_table.get_children():
+        leaderboard_table.delete(row)
+
+    for i, (p, t) in enumerate(leaderboard):
+        dist_prev = "-"
+        dist_first = "-"
+        if i > 0:
+            dist_prev = f"+{round(t - leaderboard[i - 1][1], 3)}s"
+        if i >= 1:
+            dist_first = f"+{round(t - leaderboard[0][1], 3)}s"
+
+        # Se è l'ultima riga, aggiungi il tag "highlight".
+        if i == len(leaderboard) - 1:
+            leaderboard_table.insert("", "end", values=(i + 1, p, round(t, 3), dist_prev, dist_first), tags=("highlight",))
+        else:
+            leaderboard_table.insert("", "end", values=(i + 1, p, round(t, 3), dist_prev, dist_first))
 
 def carica_classifica():
    global leaderboard
@@ -188,6 +193,10 @@ tk.Label(frame_classifica, text="Classifica Migliori Tempi").pack()
 # Add visualized column.
 columns = ("Posizione", "Pilota", "Tempo (s)", "Dist. prec.", "Dist. 1°")
 leaderboard_table = ttk.Treeview(frame_classifica, columns=columns, show='headings')
+
+# Set highlight color tag.
+leaderboard_table.tag_configure("highlight", background="violet")
+
 for col in columns:
    leaderboard_table.heading(col, text=col)
 leaderboard_table.pack()
