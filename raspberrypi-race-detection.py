@@ -80,12 +80,16 @@ def carica_classifica_da_file():
 
 def aggiorna_classifica_su_file():
    filename = classifica_filename_entry.get().strip() or 'classifica.csv'
-   with open(filename, mode='w', newline='') as f:
-       writer = csv.writer(f)
+   with open(filename, mode='w', newline='', encoding='utf-8') as f:
+       writer = csv.writer(f, delimiter=';')
        writer.writerow(["Posizione", "Pilota", "Tempo (s)", "Dist. prec.", "Dist. 1°"])
-       for i, (p, t) in enumerate(leaderboard):
-           writer.writerow([i + 1, p, round(t, 3)])
-
+    #    for i, (pilot_name, time) in enumerate(leaderboard):
+    #        formatted_time = f"{time:.3f}".replace('.', ',')
+    #        writer.writerow([i + 1, pilot_name, formatted_time])
+       for position, pilot, time, distance_prec, distance_first in leaderboard_table:
+           formatted_time = f"{time:.3f}".replace('.', ',')
+           writer.writerow([position, pilot, formatted_time, distance_prec, distance_first])
+           
 def reset_classifica():
    global leaderboard
    if messagebox.askyesno("Reset Classifica", "Sei sicuro di voler cancellare la classifica?"):
